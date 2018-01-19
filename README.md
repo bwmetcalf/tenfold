@@ -10,6 +10,8 @@ $ echo -n '[17/06/2016 12:30] Time to leave' | nc -u 54.163.79.249 5000
 {"timestamp":1468758600,"hostname":"ip-172-31-44-110","container":"brandonmetcalf/udpserver","message":"Time to leave"}
 ```
 
+The Docker container is started with the syslog driver, so logs are written through syslog on the Docker host.
+
 Basic assumptions and requirements are:
 
 * AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be defined in user's environment
@@ -34,3 +36,13 @@ cd docker
 docker build .
 ```
 
+### Next Steps and Scalability
+
+Clearly, we need more than one udpserver container running for scalability and resiliency.  Additionally, we need a way
+to balance UDP requests across all containers.  Since AWS ELBs do not support UDP, we could stand up a reverse proxy
+such as HAProxy to fron the udpserver containers.  However, this is one more layer to maintain and if only one, another 
+single point of failure.
+
+I like load balancing at the DNS layer using Route53 andd health checks.  Each udpserver would have a equal weight policy
+and corresponding health check.  Doing so we only have to worry about maintaining adequate udpserver resources and ensuring
+the appropriate record is created in Route53. 
