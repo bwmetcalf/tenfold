@@ -25,4 +25,12 @@ $ terraform apply
 $ terraform show
 ```
 
+The above will pull the latest brandonmetcalf/udpserver from http://hub.docker.com/.
+
+In order to build your own Docker image for udpserver, run:
+
+```
+cd docker
+docker build .
+```
 
