@@ -40,9 +40,9 @@ docker build .
 
 Clearly, we need more than one udpserver container running for scalability and resiliency.  Additionally, we need a way
 to balance UDP requests across all containers.  Since AWS ELBs do not support UDP, we could stand up a reverse proxy
-such as HAProxy to fron the udpserver containers.  However, this is one more layer to maintain and if only one, another 
+such as HAProxy to front the udpserver containers.  However, this is one more layer to maintain and, if only one, another 
 single point of failure.
 
-I like load balancing at the DNS layer using Route53 andd health checks.  Each udpserver would have a equal weight policy
+I like load balancing at the DNS layer using Route53 and health checks.  Each udpserver would have an equal weight policy
 and corresponding health check.  Doing so we only have to worry about maintaining adequate udpserver resources and ensuring
 the appropriate record is created in Route53. 
